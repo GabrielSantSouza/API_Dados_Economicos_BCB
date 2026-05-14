@@ -2,14 +2,19 @@ import requests
 import polars as pl
 import mysql.connector
 from datetime import datetime, timedelta
+import os
+from dotenv import load_dotenv
+
+# Carrega as variáveis ocultas do arquivo .env
+load_dotenv()
 
 DB_CONFIG = {
-    'host': '127.0.0.1',
-    'user': 'root',
-    'password': 'rootpassword',
-    'database': 'bcb_dados',
-    'port': 3306
-} # Configurações de acesso para o banco de dados
+    'host': os.getenv('DB_HOST'),
+    'user': os.getenv('DB_USER'),
+    'password': os.getenv('DB_PASSWORD'),
+    'database': os.getenv('DB_NAME'),
+    'port': int(os.getenv('DB_PORT', 3306))
+}# Configurações de acesso para o banco de dados
 
 def get_conexao():
     return mysql.connector.connect(**DB_CONFIG)

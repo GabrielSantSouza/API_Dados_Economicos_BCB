@@ -2,6 +2,19 @@ from fastapi import FastAPI, HTTPException, Query
 import mysql.connector
 from typing import List, Optional
 from datetime import date
+import os
+from dotenv import load_dotenv
+
+# Carrega as variáveis ocultas do arquivo .env
+load_dotenv()
+
+DB_CONFIG = {
+    'host': os.getenv('DB_HOST'),
+    'user': os.getenv('DB_USER'),
+    'password': os.getenv('DB_PASSWORD'),
+    'database': os.getenv('DB_NAME'),
+    'port': int(os.getenv('DB_PORT', 3306))
+}
 
 app = FastAPI(
     title="API de Dados Macroeconômicos - BCB",
@@ -9,13 +22,6 @@ app = FastAPI(
     version="1.0.0"
 )
 
-DB_CONFIG = {
-    'host': '127.0.0.1',
-    'user': 'root',
-    'password': 'rootpassword',
-    'database': 'bcb_dados',
-    'port': 3306
-}
 
 def get_db_connection():
     return mysql.connector.connect(**DB_CONFIG)
